@@ -375,12 +375,12 @@ public abstract class Platform {
         // Call a function in the stub library - this will throw an
         // exception if there is no stub lib for this platform.
         //
-        int version = Foreign.getInstance().getVersion();
-        if ((version & 0xffff00) == (Foreign.VERSION_MAJOR << 16 | Foreign.VERSION_MINOR << 8)) {
+//TODO        int version = Foreign.getInstance().getVersion();
+//        if ((version & 0xffff00) == (Foreign.VERSION_MAJOR << 16 | Foreign.VERSION_MINOR << 8)) {
             return true;
-        }
+//        }
 
-        throw new UnsatisfiedLinkError("Incorrect native library version");
+//        throw new UnsatisfiedLinkError("Incorrect native library version");
     }
 
     private static final class Default extends Platform {

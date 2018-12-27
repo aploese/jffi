@@ -11,3 +11,10 @@ jni/libffi/doc/libffi.info$
 target
 .idea
 *.iml
+config.h
+config.log
+config.lt
+config.status
+libtool
+.settings
+.classpath

@@ -2,9 +2,7 @@ package com.kenai.jffi;
 
 abstract public class ObjectParameterInvoker {
     private static final class SingletonHolder {
-        static final ObjectParameterInvoker INSTANCE 
-                = Foreign.getInstance().getVersion() >= 0x01000A /* version 1.0.10 */
-                ? newNativeInvoker() : newHeapInvoker();
+        static final ObjectParameterInvoker INSTANCE = newNativeInvoker();
     }
     
     public static ObjectParameterInvoker getInstance() {

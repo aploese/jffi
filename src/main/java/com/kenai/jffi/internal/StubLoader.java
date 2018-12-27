@@ -42,15 +42,11 @@ import java.util.LinkedList;
  * reflectively, so it cannot access other jffi classes.
  */
 public class StubLoader {
-    public final static int VERSION_MAJOR = getVersionField("MAJOR");
-    public final static int VERSION_MINOR = getVersionField("MINOR");
-    private static final String versionClassName = "com.kenai.jffi.Version";
     private static final java.util.Locale LOCALE = java.util.Locale.ENGLISH;
     
     private static final String bootPropertyFilename = "boot.properties";
     private static final String bootLibraryPropertyName = "jffi.boot.library.path";
-    private static final String stubLibraryName
-            = String.format("jffi-%d.%d", VERSION_MAJOR, VERSION_MINOR);
+    private static final String stubLibraryName = "jffi";
 
     private static volatile OS os = null;
     private static volatile CPU cpu = null;
@@ -240,7 +236,7 @@ public class StubLoader {
      * @return The path of the jar file.
      */
     private static String getStubLibraryPath() {
-        return "jni/" + getPlatformName() + "/"+ System.mapLibraryName(stubLibraryName);
+        return ".libs/" + System.mapLibraryName(stubLibraryName);
     }
     
     public StubLoader() {}
@@ -249,6 +245,11 @@ public class StubLoader {
      * Loads the stub library
      */
     private static void load() {
+       System.loadLibrary("ffi");
+       System.load(StubLoader.class.getClassLoader().getResource(".libs/" + System.mapLibraryName("jffi")).getFile());
+       return;
+       /*
+       // System.loadLibrary(System.mapLibraryName("ffi"));
         final String libName = getStubLibraryName();
         List<Throwable> errors = new LinkedList<Throwable>();
         String bootPath = getBootPath();
@@ -276,6 +277,7 @@ public class StubLoader {
             }
             throw new UnsatisfiedLinkError(new String(caw.toCharArray()));
         }
+       */
     }
 
     private static String getBootPath() {
@@ -442,15 +444,6 @@ public class StubLoader {
         return null;
     }
     
-    private static int getVersionField(String name) {
-        try {
-        Class c = Class.forName(versionClassName);
-            return (Integer) c.getField(name).get(c);
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
-    }
-
     static {
         try {
             load();

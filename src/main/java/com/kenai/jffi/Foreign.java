@@ -35,6 +35,7 @@
  */
 package com.kenai.jffi;
 
+import java.lang.annotation.Native;
 import java.lang.reflect.Method;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -49,12 +50,6 @@ final class Foreign {
                 Init.load();
 
                 Foreign foreign = new Foreign();
-
-                if ((foreign.getVersion() & 0xffff00) != (VERSION_MAJOR << 16 | VERSION_MINOR << 8)) {
-                    String msg = String.format("incorrect native library version %d.%d, expected %d.%d",
-                            (foreign.getVersion() >> 16 & 0xff), (foreign.getVersion() >> 8 & 0xff), VERSION_MAJOR, VERSION_MINOR);
-                    return new InValidInstanceHolder(new UnsatisfiedLinkError(msg));
-                }
 
                 foreign.init();
                 
@@ -87,6 +82,7 @@ final class Foreign {
         }
     }
 
+    @Deprecated
     private static final class InValidInstanceHolder extends InstanceHolder {
         private final Throwable cause;
 
@@ -105,114 +101,165 @@ final class Foreign {
     
     private Foreign() { }
 
-    private static int getVersionField(String name) {
-        try {
-        Class c = Class.forName(Foreign.class.getPackage().getName() + ".Version");
-            return (Integer) c.getField(name).get(c);
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
-    }
-    public final static int VERSION_MAJOR = getVersionField("MAJOR");
-    public final static int VERSION_MINOR = getVersionField("MINOR");
-    public final static int VERSION_MICRO = getVersionField("MICRO");
-
+    @Native
     public final static int TYPE_VOID = 0;
+    @Native
     public final static int TYPE_FLOAT = 2;
+    @Native
     public final static int TYPE_DOUBLE = 3;
+    @Native
     public final static int TYPE_LONGDOUBLE = 4;
+    @Native
     public final static int TYPE_UINT8 = 5;
+    @Native
     public final static int TYPE_SINT8 = 6;
+    @Native
     public final static int TYPE_UINT16 = 7;
+    @Native
     public final static int TYPE_SINT16 = 8;
+    @Native
     public final static int TYPE_UINT32 = 9;
+    @Native
     public final static int TYPE_SINT32 = 10;
+    @Native
     public final static int TYPE_UINT64 = 11;
+    @Native
     public final static int TYPE_SINT64 = 12;
+    @Native
     public final static int TYPE_STRUCT = 13;
+    @Native
     public final static int TYPE_POINTER = 14;
 
+    @Native
     public final static int TYPE_UCHAR = 101;
+    @Native
     public final static int TYPE_SCHAR = 102;
+    @Native
     public final static int TYPE_USHORT = 103;
+    @Native
     public final static int TYPE_SSHORT = 104;
+    @Native
     public final static int TYPE_UINT = 105;
+    @Native
     public final static int TYPE_SINT = 106;
+    @Native
     public final static int TYPE_ULONG = 107;
+    @Native
     public final static int TYPE_SLONG = 108;
 
     /** Perform  lazy  binding. Only resolve symbols as needed */
+    @Native
     public static final int RTLD_LAZY   = 0x00001;
 
     /** Resolve all symbols when loading the library */
+    @Native
     public static final int RTLD_NOW    = 0x00002;
 
     /** Symbols in this library are not made available to other libraries */
+    @Native
     public static final int RTLD_LOCAL  = 0x00004;
 
     /** All symbols in the library are made available to other libraries */
+    @Native
     public static final int RTLD_GLOBAL = 0x00008;
 
     /** Pages can be read */
+    @Native
     public static final int PROT_READ  = 0x1;
 
     /** Pages can be written */
+    @Native
     public static final int PROT_WRITE = 0x2;
 
     /** Pages can be executed */
+    @Native
     public static final int PROT_EXEC  = 0x4;
 
     /** Pages cannot be accessed */
+    @Native
     public static final int PROT_NONE  = 0x0;
 
     /** Share changes */
+    @Native
     public static final int MAP_SHARED = 0x1;
 
+    @Native
     public static final int MAP_PRIVATE = 0x2;
 
     /** Use the specified address */
+    @Native
     public static final int MAP_FIXED = 0x10;
 
+    @Native
     public static final int MAP_NORESERVE = 0x40;
 
+    @Native
     public static final int MAP_ANON = 0x100;
 
+    @Native
     public static final int MAP_ALIGN = 0x200;
 
     /** Code segment memory */
+    @Native
     public static final int MAP_TEXT = 0x400;
 
     /** Win32 VirtualAlloc/VirtualProtect flags */
+    @Native
     public static final int PAGE_NOACCESS = 0x0001;
+    @Native
     public static final int PAGE_READONLY = 0x0002;
+    @Native
     public static final int PAGE_READWRITE = 0x0004;
+    @Native
     public static final int PAGE_WRITECOPY = 0x0008;
+    @Native
     public static final int PAGE_EXECUTE           = 0x0010;
+    @Native
     public static final int PAGE_EXECUTE_READ      = 0x0020;
+    @Native
     public static final int PAGE_EXECUTE_READWRITE = 0x0040;
+    @Native
     public static final int PAGE_EXECUTE_WRITECOPY = 0x0080;
+    @Native
     public static final int MEM_COMMIT    =      0x1000;
+    @Native
     public static final int MEM_RESERVE   =      0x2000;
+    @Native
     public static final int MEM_DECOMMIT  =      0x4000;
+    @Native
     public static final int MEM_RELEASE   =      0x8000;
+    @Native
     public static final int MEM_FREE      =     0x10000;
+    @Native
     public static final int MEM_PRIVATE   =     0x20000;
+    @Native
     public static final int MEM_MAPPED    =     0x40000;
+    @Native
     public static final int MEM_RESET     =     0x80000;
+    @Native
     public static final int MEM_TOP_DOWN  =    0x100000;
+    @Native
     public static final int MEM_PHYSICAL  =    0x400000;
+    @Native
     public static final int MEM_4MB_PAGES =  0x80000000;
 
     /*
      * possible return values for JNI functions.
      */
 
+    @Native
     public static final int  JNI_OK =          0;                 /* success */
+    @Native
     public static final int  JNI_ERR =         (-1);              /* unknown error */
+    @Native
     public static final int  JNI_EDETACHED =   (-2);              /* thread detached from the VM */
+    @Native
     public static final int  JNI_EVERSION =    (-3);              /* JNI version error */
+    @Native
     public static final int  JNI_ENOMEM =      (-4);              /* not enough memory */
+    @Native
     public static final int  JNI_EEXIST =      (-5);              /* VM already created */
+    @Native
     public static final int  JNI_EINVAL =       (-6);              /* invalid arguments */
 
     /*
@@ -221,29 +268,26 @@ final class Foreign {
     /**
      * Default calling convention
      */
+    @Native
     public static final int F_DEFAULT = 0x0;
 
     /**
      * Windows STDCALL calling convention
      */
+    @Native
     public static final int F_STDCALL = 0x1;
 
     /**
      * Do not save errno after each call
      */
+    @Native
     public static final int F_NOERRNO = 0x2;
 
     /**
      * Try to capture segmentation faults and convert to java exceptions
      */
+    @Native
     public static final int F_PROTECT = 0x4;
-
-    /**
-     * Gets the native stub library version.
-     *
-     * @return The version in the form of (VERSION_MAJOR << 16 | VERSION_MINOR << 8 | VERSION_MICRO)
-     */
-    final native int getVersion();
 
     /**
      * Initializes any native method/field/class ids
