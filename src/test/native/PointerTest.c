@@ -98,6 +98,30 @@ invokeON(unsigned long *ptr, unsigned long val)
     return ret;
 }
 
+long long
+ret_LONGLONG__LONGLONG_PtrLONGLONG(long long val, long long *ptr)
+{
+    long long ret = *ptr;
+    *ptr = val;
+    return ret;
+}
+
+long 
+ret_LONG__LONG_PtrLONG(long val, long *ptr)
+{
+    long ret = *ptr;
+    *ptr = val;
+    return ret;
+}
+
+int
+ret_INTEGER__INTEGER_PtrINTEGER(int val, int *ptr)
+{
+    int ret = *ptr;
+    *ptr = val;
+    return ret;
+}
+
 unsigned long 
 invokeNO(unsigned long val, unsigned long *ptr)
 {

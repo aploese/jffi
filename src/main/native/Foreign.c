@@ -46,9 +46,17 @@ pthread_key_t jffi_threadDataKey;
 static void thread_data_free(void *ptr);
 #endif
 
+static jfieldID LongRef_Value; /* id for field 'value'  */
+static jfieldID IntRef_Value; /* id for field 'value'  */
+
 JNIEXPORT jint JNICALL
-JNI_OnLoad(JavaVM *vm, void *reserved)
+JNI_OnLoad(JavaVM *jvm, void *reserved)
 {
+    	JNIEnv *env;
+	if ((*jvm)->GetEnv(jvm, (void **) &env, JNI_VERSION_1_2)) {
+		return JNI_ERR;
+	}
+
 #ifndef _WIN32
     struct sigaction sa;
     pthread_key_create(&jffi_threadDataKey, thread_data_free);
@@ -63,6 +71,32 @@ JNI_OnLoad(JavaVM *vm, void *reserved)
 #endif
 
 #endif
+    
+    	//Get field IDs
+	jclass LongRef = (*env)->FindClass(env, "com/kenai/jffi/LongRef");
+	if (LongRef == NULL) {
+		return JNI_ERR;
+	}
+
+	LongRef_Value = (*env)->GetFieldID(env, LongRef, "value", "J");
+	if (LongRef_Value == NULL) {
+		return JNI_ERR;
+	}
+      	(*env)->DeleteLocalRef(env, LongRef);
+        
+	jclass IntRef = (*env)->FindClass(env, "com/kenai/jffi/IntRef");
+	if (IntRef == NULL) {
+		return JNI_ERR;
+	}
+
+	IntRef_Value = (*env)->GetFieldID(env, IntRef, "value", "I");
+	if (IntRef_Value == NULL) {
+		return JNI_ERR;
+	}
+        
+      	(*env)->DeleteLocalRef(env, IntRef);
+
+
     return JNI_VERSION_1_4;
 }
 
@@ -291,3 +325,67 @@ Java_com_kenai_jffi_Foreign_isFaultProtectionEnabled(JNIEnv *env , jclass klass)
 {
     return FAULT_PROTECT_ENABLED ? JNI_TRUE : JNI_FALSE; 
 }
+
+JNIEXPORT jlong JNICALL
+Java_com_kenai_jffi_Foreign_ret_1LONGLONG_1_1LONGLONG_1LONGLONG(JNIEnv* env, jclass clazz, jlong function, jlong arg1, jlong arg2) \
+{ 
+    return ((jlong (*)(jlong, jlong)) (function))((arg1), (arg2)); 
+}
+
+JNIEXPORT jlong JNICALL
+Java_com_kenai_jffi_Foreign_ret_1LONG_1_1LONG_1LONG(JNIEnv* env, jclass clazz, jlong function, jlong arg1, jlong arg2) \
+{ 
+    return ((jlong (*)(jlong, jlong)) (function))((arg1), (arg2)); 
+}
+
+JNIEXPORT jint JNICALL
+Java_com_kenai_jffi_Foreign_ret_1INTEGER_1_1INTEGER_1INTEGER(JNIEnv* env, jclass clazz, jlong function, jint arg1, jint arg2) \
+{ 
+    return ((jint (*)(jint, jint)) (function))((arg1), (arg2)); 
+}
+
+
+/*
+ * Class:     com_kenai_jffi_Foreign
+ * Method:    ret_LONGLONG__LONGLONG_PtrLONGLONG
+ * Signature: (JJLcom/kenai/jffi/LongRef;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONGLONG_1_1LONGLONG_1PtrLONGLONG
+  (JNIEnv *env, jclass clazz, jlong function, jlong arg1, jobject arg2)
+{ 
+    jlong larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
+    jlong result = ((jlong (*)(jlong, void *)) (function))((arg1), (&larg2)); 
+    (*env)->SetIntField(env, arg2, LongRef_Value, larg2);
+    return result;
+}
+
+
+/*
+ * Class:     com_kenai_jffi_Foreign
+ * Method:    ret_LONG__LONG_PtrLONG
+ * Signature: (JJLcom/kenai/jffi/LongRef;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONG_1_1LONG_1PtrLONG
+  (JNIEnv *env, jclass clazz, jlong function, jlong arg1, jobject arg2)
+{ 
+    jlong larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
+    jlong result = ((jlong (*)(jlong, void *)) (function))((arg1), (&larg2)); 
+    (*env)->SetIntField(env, arg2, LongRef_Value, larg2);
+    return result;
+}
+
+
+/*
+ * Class:     com_kenai_jffi_Foreign
+ * Method:    ret_INTEGER__INTEGER_PtrINTEGER
+ * Signature: (JILcom/kenai/jffi/IntRef;)I
+ */
+JNIEXPORT jint JNICALL Java_com_kenai_jffi_Foreign_ret_1INTEGER_1_1INTEGER_1PtrINTEGER
+  (JNIEnv *env, jclass clazz, jlong function, jint arg1, jobject arg2)
+{ 
+    jint iarg2 = (*env)->GetIntField(env, arg2, IntRef_Value);
+    jint result = ((jint (*)(jint, void *)) (function))((arg1), (&iarg2));
+    (*env)->SetIntField(env, arg2, IntRef_Value, iarg2);
+    return result;
+}
+

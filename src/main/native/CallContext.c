@@ -69,7 +69,6 @@ Java_com_kenai_jffi_Foreign_newCallContext(JNIEnv* env, jobject self,
     jlong* paramTypes;
     int paramCount, i, rawOffset = 0;
     bool isFastInt = false, isFastLong = false;
-    ffi_type* ffiParamTypes;
     int ffiStatus;
     int abi;
 

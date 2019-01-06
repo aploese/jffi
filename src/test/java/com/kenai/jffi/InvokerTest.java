@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -86,7 +87,7 @@ public class InvokerTest {
         private int offset, length;
 
         HeapArrayStrategy(int offset, int length) {
-            super(HEAP);
+            super(StrategyType.HEAP);
             this.offset = offset;
             this.length = length;
         }
@@ -115,7 +116,7 @@ public class InvokerTest {
     static class DirectStrategy extends ObjectParameterStrategy {
 
         DirectStrategy() {
-            super(DIRECT);
+            super(StrategyType.DIRECT);
         }
 
         @Override
@@ -178,44 +179,40 @@ public class InvokerTest {
     
     public static void invokeO(Invoker invoker) {
         Function function = getFunction("invokeO", Type.SLONG, Type.POINTER);
-        CallContext ctx = getContext(Type.SLONG, Type.POINTER);
         Object arr = newNativeUnsignedLongArray(N1);
         ObjectParameterStrategy strategy = new HeapArrayStrategy(0, 1);
         ObjectParameterInfo info = ObjectParameterInfo.create(0, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
 
-        long ret = invoker.invokeN1(ctx, function.getFunctionAddress(), 0, 1, arr, strategy, info);
+        long ret = invoker.invokeN1(function.getCallContext(), function.getFunctionAddress(), 0, 1, arr, strategy, info);
         assertLongHex("incorrect return value", N1, unsigned(ret));
         assertLongHex("incorrect array value", 0xdeadbeefL, getNativeUnsignedLong(arr));
     }
 
     public static void invokeNO(Invoker invoker) {
         Function function = getFunction("invokeNO", Type.SLONG, Type.SLONG, Type.POINTER);
-        CallContext ctx = getContext(Type.SLONG, Type.SLONG, Type.POINTER);
         Object arr = newNativeUnsignedLongArray(N1);
         ObjectParameterStrategy strategy = new HeapArrayStrategy(0, 1);
         ObjectParameterInfo info = ObjectParameterInfo.create(1, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), N2, 0L, 1, arr, strategy, info);
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), N2, 0L, 1, arr, strategy, info);
         assertLongHex("incorrect return value", N1, unsigned(ret));
         assertLongHex("incorrect array value", N2, getNativeUnsignedLong(arr));
     }
 
     public static void invokeON(Invoker invoker) {
         Function function = getFunction("invokeON", Type.SLONG, Type.POINTER, Type.SLONG);
-        CallContext ctx = getContext(Type.SLONG, Type.POINTER, Type.SLONG);
         Object arr = newNativeUnsignedLongArray(N1);
         ObjectParameterStrategy strategy = new HeapArrayStrategy(0, 1);
         ObjectParameterInfo info = ObjectParameterInfo.create(0, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), 0L, N2, 1, arr, strategy, info);
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), 0L, N2, 1, arr, strategy, info);
         assertLongHex("incorrect return value", N1, unsigned(ret));
         assertLongHex("incorrect array value", N2, getNativeUnsignedLong(arr));
     }
 
     public static void invokeOO(Invoker invoker) {
         Function function = getFunction("invokeOO", Type.SLONG, Type.POINTER, Type.POINTER);
-        CallContext ctx = getContext(Type.SLONG, Type.POINTER, Type.POINTER);
         Object arr1 = newNativeUnsignedLongArray(N1);
         Object arr2 = newNativeUnsignedLongArray(N2);
         ObjectParameterStrategy strategy = new HeapArrayStrategy(0, 1);
@@ -223,7 +220,7 @@ public class InvokerTest {
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
         ObjectParameterInfo o2info = ObjectParameterInfo.create(1, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), 0L, 0L, 2, arr1, strategy, o1info, arr2, strategy, o2info);
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), 0L, 0L, 2, arr1, strategy, o1info, arr2, strategy, o2info);
         assertLongHex("incorrect array value", N2, getNativeUnsignedLong(arr1));
         assertLongHex("incorrect array value", N1, getNativeUnsignedLong(arr2));
         assertLongHex("incorrect return value", unsigned(N1 + N2), unsigned(ret));
@@ -231,7 +228,6 @@ public class InvokerTest {
 
     public static void invokeDO(Invoker invoker) {
         Function function = getFunction("invokeOO", Type.SLONG, Type.POINTER, Type.POINTER);
-        CallContext ctx = getContext(Type.SLONG, Type.POINTER, Type.POINTER);
         UnitHelper.Address o1 =  new UnitHelper.Address(IO.allocateMemory(8, true));
         putNativeUnsignedLong(o1, N1);
         Object o2 = newNativeUnsignedLongArray(N2);
@@ -242,7 +238,7 @@ public class InvokerTest {
         ObjectParameterInfo o2info = ObjectParameterInfo.create(1, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
 
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), o1.address, 0L, 1, o1, s1, o1info, o2, s2, o2info);
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), o1.address, 0L, 1, o1, s1, o1info, o2, s2, o2info);
         assertLongHex("incorrect ptr value", N2, getNativeUnsignedLong(o1));
         assertLongHex("incorrect array value", N1, getNativeUnsignedLong(o2));
         assertLongHex("incorrect return value", N1 + N2, unsigned(ret));
@@ -250,7 +246,6 @@ public class InvokerTest {
 
     public static void invokeOD(Invoker invoker) {
         Function function = getFunction("invokeOO", Type.SLONG, Type.POINTER, Type.POINTER);
-        CallContext ctx = getContext(Type.SLONG, Type.POINTER, Type.POINTER);
         UnitHelper.Address ptr =  new UnitHelper.Address(IO.allocateMemory(8, true));
         putNativeUnsignedLong(ptr, N2);
         Object array = newNativeUnsignedLongArray(N1);
@@ -261,7 +256,7 @@ public class InvokerTest {
         ObjectParameterInfo o2info = ObjectParameterInfo.create(1, ObjectParameterInfo.ARRAY,
                 NATIVE_LONG, ObjectParameterInfo.IN | ObjectParameterInfo.OUT);
 
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), 0L, ptr.address, 1, array, arrayStrategy, o1info, ptr, ptrStrategy, o2info);
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), 0L, ptr.address, 1, array, arrayStrategy, o1info, ptr, ptrStrategy, o2info);
         assertLongHex("incorrect ptr value", N1, getNativeUnsignedLong(ptr));
         assertLongHex("incorrect array value", N2, getNativeUnsignedLong(array));
         assertLongHex("incorrect return value", N1 + N2, unsigned(ret));
@@ -319,7 +314,6 @@ public class InvokerTest {
 
     public static boolean string_equals(Invoker invoker, String s1, String s2) {
         Function function = getFunction("string_equals", Type.SINT, Type.POINTER, Type.POINTER);
-        CallContext ctx = getContext(Type.SINT, Type.POINTER, Type.POINTER);
         ByteBuffer s1Buffer = Charset.defaultCharset().encode(CharBuffer.wrap(s1));
         ByteBuffer s2Buffer  = Charset.defaultCharset().encode(CharBuffer.wrap(s2));
 
@@ -330,7 +324,7 @@ public class InvokerTest {
         ObjectParameterInfo o2info = ObjectParameterInfo.create(1, ObjectParameterInfo.ARRAY,
                 ObjectParameterInfo.BYTE, ObjectParameterInfo.IN | ObjectParameterInfo.NULTERMINATE);
 
-        long ret = invoker.invokeN2(ctx, function.getFunctionAddress(), 0, 0, 2,
+        long ret = invoker.invokeN2(function.getCallContext(), function.getFunctionAddress(), 0, 0, 2,
                 s1Buffer.array(), s1strategy, o1info, s2Buffer.array(), s2strategy, o2info);
         return ret != 0;
     }
@@ -338,5 +332,55 @@ public class InvokerTest {
     @Test public void string_equals_heap() {
         assertTrue("strings not equal", string_equals(new NativeInvoker(), "test", "test"));
     }
+
+    @Test
+    public void testRET_LONGLONG__LONGLONG_LONGLONG() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
+        long ret = Foreign.ret_LONGLONG__LONGLONG_LONGLONG(fn.address, 1, 2);
+        assertEquals("incorrect return value", 3, ret);
+    }
+
+    @Test
+    public void testRET_LONG__LONG_LONG() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
+        long ret = Foreign.ret_LONG__LONG_LONG(fn.address, 1, 2);
+        assertEquals("incorrect return value", 3, ret);
+    }
+
+    @Test
+    public void testRET_LINTEGER__INTEGER_INTEGER() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
+        int ret = Foreign.ret_INTEGER__INTEGER_INTEGER(fn.address, 1, 2);
+        assertEquals("incorrect return value", 3, ret);
+        
+    }
+
+    @Test
+    public void testRET_LONGLONG__LONGLONG_PtrLONGLONG() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_LONGLONG__LONGLONG_PtrLONGLONG");
+        LongRef longRef = new LongRef(N2);
+        long ret = Foreign.ret_LONGLONG__LONGLONG_PtrLONGLONG(fn.address, N1, longRef);
+        assertLongHex("incorrect return value", N2, ret);
+        assertLongHex("incorrect longRef value", N1, longRef.value);
+    }
+
+    @Test
+    public void testRET_LONG__LONG_PtrLONG() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_LONG__LONG_PtrLONG");
+        LongRef longRef = new LongRef(N2);
+        long ret = Foreign.ret_LONG__LONG_PtrLONG(fn.address, N1, longRef);
+        assertLongHex("incorrect return value", N2, ret);
+        assertLongHex("incorrect longRef value", N1, longRef.value);
+    }
+
+    @Test
+    public void testRET_LINTEGER__INTEGER_PtrINTEGER() {
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_INTEGER__INTEGER_PtrINTEGER");
+        IntRef intRef = new IntRef((int)N2);
+        int ret = Foreign.ret_INTEGER__INTEGER_PtrINTEGER(fn.address, (int)N1, intRef);
+        assertLongHex("incorrect return value", N2, ret);
+        assertLongHex("incorrect longRef value", N1, intRef.value);
+    }
+
 
 }

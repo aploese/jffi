@@ -38,8 +38,6 @@ abstract public class ObjectParameterStrategy<T> {
     private final boolean isDirect;
     final int typeInfo;
     protected static enum StrategyType { DIRECT, HEAP }
-    protected static final StrategyType DIRECT = StrategyType.DIRECT;
-    protected static final StrategyType HEAP = StrategyType.HEAP;
 
     public ObjectParameterStrategy(boolean isDirect) {
         this(isDirect, ObjectParameterType.INVALID);
@@ -55,7 +53,7 @@ abstract public class ObjectParameterStrategy<T> {
     }
 
     public ObjectParameterStrategy(StrategyType strategyType, ObjectParameterType parameterType) {
-        this.isDirect = strategyType == DIRECT;
+        this.isDirect = strategyType == StrategyType.DIRECT;
         this.typeInfo = parameterType.typeInfo;
     }
 

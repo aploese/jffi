@@ -1816,4 +1816,12 @@ final class Foreign {
     
     final native String getArch();
     
+    public static native long ret_LONGLONG__LONGLONG_LONGLONG(long funcAddress, long arg1, long arg2);
+    public static native long ret_LONG__LONG_LONG(long funcAddress, long arg1, long arg2);
+    public static native int ret_INTEGER__INTEGER_INTEGER(long funcAddress, int arg1, int arg2);
+
+    public static native long ret_LONGLONG__LONGLONG_PtrLONGLONG(long funcAddress, long arg1, LongRef arg2);
+    public static native long ret_LONG__LONG_PtrLONG(long funcAddress, long arg1, LongRef arg2);
+    public static native int ret_INTEGER__INTEGER_PtrINTEGER(long funcAddress, int arg1, IntRef arg2);
+
 }

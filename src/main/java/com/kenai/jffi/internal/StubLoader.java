@@ -245,7 +245,7 @@ public class StubLoader {
      * Loads the stub library
      */
     private static void load() {
-       System.loadLibrary("ffi");
+  //     System.loadLibrary("ffi");
        System.load(StubLoader.class.getClassLoader().getResource(".libs/" + System.mapLibraryName("jffi")).getFile());
        return;
        /*
