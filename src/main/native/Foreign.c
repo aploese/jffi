@@ -329,19 +329,19 @@ Java_com_kenai_jffi_Foreign_isFaultProtectionEnabled(JNIEnv *env , jclass klass)
 JNIEXPORT jlong JNICALL
 Java_com_kenai_jffi_Foreign_ret_1LONGLONG_1_1LONGLONG_1LONGLONG(JNIEnv* env, jclass clazz, jlong function, jlong arg1, jlong arg2) \
 { 
-    return ((jlong (*)(jlong, jlong)) (function))((arg1), (arg2)); 
+    return ((long long (*)(long long, long long)) (function))((arg1), (arg2)); 
 }
 
 JNIEXPORT jlong JNICALL
 Java_com_kenai_jffi_Foreign_ret_1LONG_1_1LONG_1LONG(JNIEnv* env, jclass clazz, jlong function, jlong arg1, jlong arg2) \
 { 
-    return ((jlong (*)(jlong, jlong)) (function))((arg1), (arg2)); 
+    return ((long (*)(long, long)) (function))((arg1), (arg2)); 
 }
 
 JNIEXPORT jint JNICALL
 Java_com_kenai_jffi_Foreign_ret_1INTEGER_1_1INTEGER_1INTEGER(JNIEnv* env, jclass clazz, jlong function, jint arg1, jint arg2) \
 { 
-    return ((jint (*)(jint, jint)) (function))((arg1), (arg2)); 
+    return ((int (*)(int, int)) (function))((arg1), (arg2)); 
 }
 
 
@@ -353,8 +353,8 @@ Java_com_kenai_jffi_Foreign_ret_1INTEGER_1_1INTEGER_1INTEGER(JNIEnv* env, jclass
 JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONGLONG_1_1LONGLONG_1PtrLONGLONG
   (JNIEnv *env, jclass clazz, jlong function, jlong arg1, jobject arg2)
 { 
-    jlong larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
-    jlong result = ((jlong (*)(jlong, void *)) (function))((arg1), (&larg2)); 
+    long long larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
+    long long result = ((long long (*)(long long, long long *)) (function))((arg1), (&larg2)); 
     (*env)->SetIntField(env, arg2, LongRef_Value, larg2);
     return result;
 }
@@ -368,8 +368,8 @@ JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONGLONG_1_1LONGLONG_1P
 JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONG_1_1LONG_1PtrLONG
   (JNIEnv *env, jclass clazz, jlong function, jlong arg1, jobject arg2)
 { 
-    jlong larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
-    jlong result = ((jlong (*)(jlong, void *)) (function))((arg1), (&larg2)); 
+    long larg2 = (*env)->GetLongField(env, arg2, LongRef_Value);
+    long result = ((long (*)(long, long *)) (function))((arg1), (&larg2)); 
     (*env)->SetIntField(env, arg2, LongRef_Value, larg2);
     return result;
 }
@@ -383,8 +383,8 @@ JNIEXPORT jlong JNICALL Java_com_kenai_jffi_Foreign_ret_1LONG_1_1LONG_1PtrLONG
 JNIEXPORT jint JNICALL Java_com_kenai_jffi_Foreign_ret_1INTEGER_1_1INTEGER_1PtrINTEGER
   (JNIEnv *env, jclass clazz, jlong function, jint arg1, jobject arg2)
 { 
-    jint iarg2 = (*env)->GetIntField(env, arg2, IntRef_Value);
-    jint result = ((jint (*)(jint, void *)) (function))((arg1), (&iarg2));
+    int iarg2 = (*env)->GetIntField(env, arg2, IntRef_Value);
+    int result = ((int (*)(int, int *)) (function))((arg1), (&iarg2));
     (*env)->SetIntField(env, arg2, IntRef_Value, iarg2);
     return result;
 }
