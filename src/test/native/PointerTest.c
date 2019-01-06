@@ -122,6 +122,26 @@ ret_INTEGER__INTEGER_PtrINTEGER(int val, int *ptr)
     return ret;
 }
 
+
+long long
+ret_LONGLONG__LONGLONG_LONGLONG(long long arg1, long long arg2)
+{
+    return arg1 ^ arg2;
+}
+
+long 
+ret_LONG__LONG_LONG(long arg1, long arg2)
+{
+    return arg1 ^ arg2;
+}
+
+int
+ret_INTEGER__INTEGER_INTEGER(int arg1, int arg2)
+{
+    return arg1 ^ arg2;
+}
+
+
 unsigned long 
 invokeNO(unsigned long val, unsigned long *ptr)
 {

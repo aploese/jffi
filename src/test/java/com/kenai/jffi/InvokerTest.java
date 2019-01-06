@@ -335,23 +335,23 @@ public class InvokerTest {
 
     @Test
     public void testRET_LONGLONG__LONGLONG_LONGLONG() {
-        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
-        long ret = Foreign.ret_LONGLONG__LONGLONG_LONGLONG(fn.address, 1, 2);
-        assertEquals("incorrect return value", 3, ret);
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_LONGLONG__LONGLONG_LONGLONG");
+        long ret = Foreign.ret_LONGLONG__LONGLONG_LONGLONG(fn.address, N1, N2);
+        assertEquals("incorrect return value", N1 ^ N2, ret);
     }
 
     @Test
     public void testRET_LONG__LONG_LONG() {
-        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
-        long ret = Foreign.ret_LONG__LONG_LONG(fn.address, 1, 2);
-        assertEquals("incorrect return value", 3, ret);
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_LONG__LONG_LONG");
+        long ret = Foreign.ret_LONG__LONG_LONG(fn.address, N1, N2);
+        assertEquals("incorrect return value",  N1 ^ N2, ret);
     }
 
     @Test
     public void testRET_LINTEGER__INTEGER_INTEGER() {
-        UnitHelper.Address fn = UnitHelper.findSymbol("add_s64");
-        int ret = Foreign.ret_INTEGER__INTEGER_INTEGER(fn.address, 1, 2);
-        assertEquals("incorrect return value", 3, ret);
+        UnitHelper.Address fn = UnitHelper.findSymbol("ret_INTEGER__INTEGER_INTEGER");
+        int ret = Foreign.ret_INTEGER__INTEGER_INTEGER(fn.address, (int)N1, (int)N2);
+        assertEquals("incorrect return value", (int)(N1 ^ N2), ret);
         
     }
 
