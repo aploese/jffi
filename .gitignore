@@ -20,7 +20,6 @@ aclocal.m4
 ar-lib
 autom4te.cache
 compile
-config.guess
 depcomp
 ltmain.sh
 stamp-h1
