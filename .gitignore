@@ -29,7 +29,6 @@ missing
 .libs
 
 Makefile
-Makefile.in
 
 *.o
 *.lo
