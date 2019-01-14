@@ -18,7 +18,6 @@ libtool
 
 ar-lib
 autom4te.cache
-depcomp
 stamp-h1
 .deps
 .libs
