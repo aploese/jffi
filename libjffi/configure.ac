@@ -4,6 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([jffi], [0.0.0], [aploese@gmx.de])
 AM_INIT_AUTOMAKE([-Wall -Werror])
+AM_MAINTAINER_MODE
 
 AM_PROG_AR
 
