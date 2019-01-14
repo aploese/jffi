@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
-        <version>7</version>
+        <version>9</version>
     </parent>
     <groupId>com.github.jnr</groupId>
     <artifactId>jffi</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.19-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <name>jffi</name>
     <description>Java Foreign Function Interface</description>
     <url>http://github.com/jnr/jffi</url>
@@ -37,9 +37,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -55,24 +67,86 @@
 
     <profiles>
         <profile>
-            <id>linux-profile</id>
-            <activation>
-                <os>
-                    <name>linux</name>
-                </os>
-            </activation>
+            <id>compile</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <id>configure-native-jni-sources</id>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <executable>configure</executable>
+                                    <workingDirectory>${basedir}/libjffi</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>compile-native-jni-sources</id>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>${basedir}/libjffi</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>install-native-jni-libs</id>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <executable>sudo make install</executable>
+                                    <workingDirectory>${basedir}/libjffi</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>configure-native-test-sources</id>
+                                <phase>compile</phase>
+                                <configuration>
+                                    <executable>configure</executable>
+                                    <workingDirectory>${basedir}/libjffitests</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>compile-native-test-sources</id>
+                                <phase>test-compile</phase>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>${basedir}/libjffitests</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>install-native-test-libs</id>
+                                <phase>test-compile</phase>
+                                <configuration>
+                                    <executable>sudo make install</executable>
+                                    <workingDirectory>${basedir}/libjffitests</workingDirectory>                         
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
-        <profile>
-            <id>freebsd-profile</id>
-            <activation>
-                <os>
-                    <name>freebsd</name>
-                </os>
-            </activation>
-            <properties>
-                <make>gmake</make>
-            </properties>
-        </profile>
+        
     </profiles>
 
     <build>
@@ -84,45 +158,16 @@
                 <configuration>
                     <compilerArgs>
                         <arg>-h</arg>
-                        <arg>${project.build.directory}/generated-sources/main/native/include/</arg>
+                        <arg>${project.build.directory}/include/</arg>
                     </compilerArgs>
                     <!--debug>true</debug-->
-                    <showDeprecation>true</showDeprecation>
+                    <!--showDeprecation>true</showDeprecation-->
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>compile-native-jni-sources</id>
-                        <phase>compile</phase>
-                        <configuration>
-                            <executable>${make}</executable>
-                            <workingDirectory>${basedir}/src/main/native/</workingDirectory>                         
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>compile-native-test-sources</id>
-                        <phase>test-compile</phase>
-                        <configuration>
-                            <executable>${make}</executable>
-                            <workingDirectory>${basedir}/src/test/native/</workingDirectory>                         
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0-M3</version>
             </plugin>
         </plugins>
     </build>
