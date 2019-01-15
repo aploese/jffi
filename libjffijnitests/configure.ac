@@ -8,7 +8,7 @@ AM_MAINTAINER_MODE
 
 AM_PROG_AR
 
-LT_INIT([dlopen])
+LT_INIT([disable-static dlopen])
 AC_CONFIG_SRCDIR()
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([m4])
@@ -27,13 +27,13 @@ AC_ARG_ENABLE([debug],
     [enable debug code (default is no)])],
   [debug="$withval"], [debug=no])
 
-AC_ARG_WITH([jffi-header-dir],
-  [AS_HELP_STRING([--with-jffi-header-dir],
-    [dir of generated jffi jni headers (default target/generated-sources/main/native/include)])],
-  [JFFI_JNI_HEADER_DIR="$withval"], [JFFI_JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/main/native/include"])
+AC_ARG_WITH([jffi-test-header-dir],
+  [AS_HELP_STRING([--with-jffi-test-header-dir],
+    [dir of generated jffi jni test headers (default target/generated-test-sources/include)])],
+  [JFFI_JNI_TEST_HEADER_DIR="$withval"], [JFFI_JNI_TEST_HEADER_DIR="\$(top_builddir)/../target/generated-test-sources/include"])
 
 #TODO check and make absolute path
-AC_SUBST(JFFI_JNI_HEADER_DIR)
+AC_SUBST(JFFI_JNI_TEST_HEADER_DIR)
 
 
 # Checks for libraries.
@@ -61,6 +61,6 @@ AC_SUBST(JNI_INCLUDE_FLAGS)
 # Checks for library functions.
 
 
-AC_CONFIG_FILES([Makefile src/main/native/Makefile src/test/native/Makefile ])
+AC_CONFIG_FILES([Makefile src/Makefile])
 
 AC_OUTPUT

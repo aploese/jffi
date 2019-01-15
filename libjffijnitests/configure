@@ -639,7 +639,7 @@ LIBOBJS
 JNI_INCLUDE_FLAGS
 JNI_INCLUDE_DIRS
 _ACJNI_JAVAC
-JFFI_JNI_HEADER_DIR
+JFFI_JNI_TEST_HEADER_DIR
 CPP
 LT_SYS_LIBRARY_PATH
 OTOOL64
@@ -763,8 +763,8 @@ enable_option_checking
 enable_silent_rules
 enable_maintainer_mode
 enable_dependency_tracking
-enable_shared
 enable_static
+enable_shared
 with_pic
 enable_fast_install
 with_aix_soname
@@ -772,7 +772,7 @@ with_gnu_ld
 with_sysroot
 enable_libtool_lock
 enable_debug
-with_jffi_header_dir
+with_jffi_test_header_dir
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1422,8 +1422,8 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking
                           speeds up one-time build
+  --enable-static[=PKGS]  build static libraries [default=no]
   --enable-shared[=PKGS]  build shared libraries [default=yes]
-  --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
@@ -1440,8 +1440,9 @@ Optional Packages:
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-sysroot[=DIR]    Search for dependent libraries within DIR (or the
                           compiler's sysroot if not specified).
-  --with-jffi-header-dir  dir of generated jffi jni headers (default
-                          target/generated-sources/main/native/include)
+  --with-jffi-test-header-dir
+                          dir of generated jffi jni test headers (default
+                          target/generated-test-sources/include)
 
 Some influential environment variables:
   CC          C compiler command
@@ -8035,6 +8036,35 @@ done
 
 
 # Set options
+# Check whether --enable-static was given.
+if test "${enable_static+set}" = set; then :
+  enableval=$enable_static; p=${PACKAGE-default}
+    case $enableval in
+    yes) enable_static=yes ;;
+    no) enable_static=no ;;
+    *)
+     enable_static=no
+      # Look at the argument we got.  We use all the common list separators.
+      lt_save_ifs=$IFS; IFS=$IFS$PATH_SEPARATOR,
+      for pkg in $enableval; do
+	IFS=$lt_save_ifs
+	if test "X$pkg" = "X$p"; then
+	  enable_static=yes
+	fi
+      done
+      IFS=$lt_save_ifs
+      ;;
+    esac
+else
+  enable_static=no
+fi
+
+
+
+
+
+
+
 enable_dlopen=yes
 
 
@@ -8066,36 +8096,6 @@ else
   enable_shared=yes
 fi
 
-
-
-
-
-
-
-
-
-  # Check whether --enable-static was given.
-if test "${enable_static+set}" = set; then :
-  enableval=$enable_static; p=${PACKAGE-default}
-    case $enableval in
-    yes) enable_static=yes ;;
-    no) enable_static=no ;;
-    *)
-     enable_static=no
-      # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs=$IFS; IFS=$IFS$PATH_SEPARATOR,
-      for pkg in $enableval; do
-	IFS=$lt_save_ifs
-	if test "X$pkg" = "X$p"; then
-	  enable_static=yes
-	fi
-      done
-      IFS=$lt_save_ifs
-      ;;
-    esac
-else
-  enable_static=yes
-fi
 
 
 
@@ -13458,11 +13458,11 @@ fi
 
 
 
-# Check whether --with-jffi-header-dir was given.
-if test "${with_jffi_header_dir+set}" = set; then :
-  withval=$with_jffi_header_dir; JFFI_JNI_HEADER_DIR="$withval"
+# Check whether --with-jffi-test-header-dir was given.
+if test "${with_jffi_test_header_dir+set}" = set; then :
+  withval=$with_jffi_test_header_dir; JFFI_JNI_TEST_HEADER_DIR="$withval"
 else
-  JFFI_JNI_HEADER_DIR="\$(top_builddir)/target/generated-sources/main/native/include"
+  JFFI_JNI_TEST_HEADER_DIR="\$(top_builddir)/../target/generated-test-sources/include"
 fi
 
 
@@ -13700,7 +13700,7 @@ done
 # Checks for library functions.
 
 
-ac_config_files="$ac_config_files Makefile src/main/native/Makefile src/test/native/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -14439,8 +14439,8 @@ double_quote_subst='$double_quote_subst'
 delay_variable_subst='$delay_variable_subst'
 macro_version='`$ECHO "$macro_version" | $SED "$delay_single_quote_subst"`'
 macro_revision='`$ECHO "$macro_revision" | $SED "$delay_single_quote_subst"`'
-enable_shared='`$ECHO "$enable_shared" | $SED "$delay_single_quote_subst"`'
 enable_static='`$ECHO "$enable_static" | $SED "$delay_single_quote_subst"`'
+enable_shared='`$ECHO "$enable_shared" | $SED "$delay_single_quote_subst"`'
 pic_mode='`$ECHO "$pic_mode" | $SED "$delay_single_quote_subst"`'
 enable_fast_install='`$ECHO "$enable_fast_install" | $SED "$delay_single_quote_subst"`'
 shared_archive_member_spec='`$ECHO "$shared_archive_member_spec" | $SED "$delay_single_quote_subst"`'
@@ -14724,8 +14724,7 @@ do
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "src/main/native/Makefile") CONFIG_FILES="$CONFIG_FILES src/main/native/Makefile" ;;
-    "src/test/native/Makefile") CONFIG_FILES="$CONFIG_FILES src/test/native/Makefile" ;;
+    "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -15470,11 +15469,11 @@ available_tags=''
 macro_version=$macro_version
 macro_revision=$macro_revision
 
-# Whether or not to build shared libraries.
-build_libtool_libs=$enable_shared
-
 # Whether or not to build static libraries.
 build_old_libs=$enable_static
+
+# Whether or not to build shared libraries.
+build_libtool_libs=$enable_shared
 
 # What type of objects to build.
 pic_mode=$pic_mode

@@ -30,9 +30,9 @@ public final class ByteMemory extends Memory<Byte> implements jnr.jffi.memory.By
         return byteValue(0);
     }
 
-    private native byte getByteValue0(long offset);
+    private native byte getByteValue0(long address);
 
-    private native void setByteValue0(long offset, byte value);
+    private native void setByteValue0(long address, byte value);
 
     @Override
     public final byte byteValue(long offset) {
@@ -44,6 +44,16 @@ public final class ByteMemory extends Memory<Byte> implements jnr.jffi.memory.By
     public void byteValue(int offset, byte value) {
         checkOffset(offset, 1);
         setByteValue0(pointerValue + offset, value);
+    }
+
+    @Override
+    public byte getByte() {
+        return getByteValue0(pointerValue);
+    }
+
+    @Override
+    public void setByte(byte value) {
+        setByteValue0(pointerValue, value);
     }
 
 }

@@ -13,18 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnr.jffi.memory;
-
-import jnr.jffi.types.Pointer;
+package jnr.jffi.benchmark;
 
 /**
  *
  * @author aploese
  */
-public interface Memory<T> extends Pointer<T> {
-
-    long getSize();
-
-    long getMemoryAddress();
+public interface LongBenchmarkTests {
     
+    void call_void();
+    
+    long call_long();
+    
+    long call_long__1long(long arg0);
+    
+    long call_long__2long(long arg0, long arg1);
+    
+    long call_long__3long(long arg0, long arg1, long arg2);
+
+    long call_long__4long(long arg0, long arg1, long arg2, long arg3);
+    
+    long call_long__5long(long arg0, long arg1, long arg2, long arg3, long arg4);
+    
+    long call_long__6long(long arg0, long arg1, long arg2, long arg3, long arg4, long arg5);
+
 }

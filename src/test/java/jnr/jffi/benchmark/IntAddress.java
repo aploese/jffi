@@ -13,18 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jnr.jffi.memory;
-
-import jnr.jffi.types.Pointer;
+package jnr.jffi.benchmark;
 
 /**
  *
  * @author aploese
  */
-public interface Memory<T> extends Pointer<T> {
+public class IntAddress {
 
-    long getSize();
+    static {
+        try {
+            if (!JffiJniTestsLibrary.isLibLoaded()) {
+                JffiJniTestsLibrary.loadNativeLib();
+            }
+        } catch (UnsatisfiedLinkError e) {
+            throw new RuntimeException("Please make sure the test jni lib is already loaded", e);
+        }
+    }
 
-    long getMemoryAddress();
-    
+    final int address;
+
+    public IntAddress(int address) {
+        this.address = address;
+    }
+
 }

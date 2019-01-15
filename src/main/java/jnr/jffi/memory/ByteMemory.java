@@ -38,4 +38,8 @@ public interface ByteMemory extends Memory<Byte> {
      */
     void byteValue(int offset, byte value);
 
+    byte getByte();
+
+    void setByte(byte value);
+
 }

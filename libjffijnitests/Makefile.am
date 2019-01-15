@@ -1,3 +1,3 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src/main/native src/test/native
+SUBDIRS = src
