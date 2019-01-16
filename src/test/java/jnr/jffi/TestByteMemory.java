@@ -92,6 +92,7 @@ public class TestByteMemory {
         });
     }
 
+    @BenchmarkTest
     @Test
     public void testBenchmarkGet() {
         System.out.println("testBenchmarkGet");
@@ -101,6 +102,7 @@ public class TestByteMemory {
         }
     }
 
+    @BenchmarkTest
     @Test
     public void testBenchmarkSet() {
         System.out.println("testBenchmarkGet");

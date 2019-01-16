@@ -13461,7 +13461,7 @@ fi
 if test "${with_jffi_header_dir+set}" = set; then :
   withval=$with_jffi_header_dir; JFFI_JNI_HEADER_DIR="$withval"
 else
-  JFFI_JNI_HEADER_DIR="\$(top_builddir)/../target/include"
+  JFFI_JNI_HEADER_DIR="\$(top_builddir)/../target/generated-sources/include"
 fi
 
 
