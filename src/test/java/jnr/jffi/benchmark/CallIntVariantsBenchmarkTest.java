@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CallIntVariantsBenchmarkTest {
 
-    final static int ROUNDS = 1000000;
+    final static int ROUNDS = 10000000;
 
     final static IntAddressArgIntArgs INT_ADDRESS_ARG_INT_ARGS = new IntAddressArgIntArgs(ROUNDS);
     final static IntAddressFieldIntArgs INT_ADDRESS_FIELD_INT_ARGS = new IntAddressFieldIntArgs(ROUNDS);

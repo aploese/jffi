@@ -13,7 +13,7 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1void0
   (JNIEnv *env, jclass cls, jint address) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
 }
 
 /*
@@ -23,7 +23,7 @@ JNIEXPORT void JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1void0
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int0
   (JNIEnv *env, jclass cls, jint address) {
-    addresssink = (void *)(long)address;
+    addresssink = (void *)(uintptr_t)address;
     return 0;
 }
 
@@ -34,7 +34,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int0
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_11int0
   (JNIEnv *env, jclass cls, jint address, jint arg0) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 
@@ -45,7 +45,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_12int0
   (JNIEnv *env, jclass cls, jint address, jint arg0, jint arg1) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 
@@ -56,7 +56,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_13int0
   (JNIEnv *env, jclass cls, jint address, jint arg0, jint arg1, jint arg2) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 
@@ -67,7 +67,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_14int0
   (JNIEnv *env, jclass cls, jint address, jint arg0, jint arg1, jint arg2, jint arg3) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 
@@ -78,7 +78,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_15int0
   (JNIEnv *env, jclass cls, jint address, jint arg0, jint arg1, jint arg2, jint arg3, jint arg4) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 
@@ -89,7 +89,7 @@ JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_
  */
 JNIEXPORT jint JNICALL Java_jnr_jffi_benchmark_IntAddressArgIntArgs_call_1int_1_16int0
   (JNIEnv *env, jclass cls, jint address, jint arg0, jint arg1, jint arg2, jint arg3, jint arg4, jint arg5) {
-    addresssink = (void *)(long)address; 
+    addresssink = (void *)(uintptr_t)address; 
     return 0;
 }
 

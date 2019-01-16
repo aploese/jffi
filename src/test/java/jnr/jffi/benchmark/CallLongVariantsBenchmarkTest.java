@@ -28,7 +28,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CallLongVariantsBenchmarkTest {
     
-    final static int ROUNDS = 1000000;
+    final static int ROUNDS = 10000000;
 
     final static IntAddressArgLongArgs INT_ADDRESS_ARG_LONG_ARGS = new IntAddressArgLongArgs(ROUNDS);
     final static IntAddressFieldLongArgs INT_ADDRESS_FIELD_LONG_ARGS = new IntAddressFieldLongArgs(ROUNDS);

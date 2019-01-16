@@ -20,7 +20,9 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
 
 /**
  *
@@ -52,6 +54,7 @@ public class NativeCall_I__P_L_I__Test {
     }
 
     @Test
+    @Disabled
     public void jnr_jffi_test_NativeCall_I__StructArray_L_I() {
         fail();
     }

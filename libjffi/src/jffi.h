@@ -18,7 +18,7 @@ extern jfieldID IntRef_Value; /* id for field 'value'  */
 extern jfieldID OpaquePointer_pointerValue;
 
 inline void * getPointerValue(JNIEnv *env, jobject opaquePointer) {
-    return (void *) (*env)->GetLongField(env, opaquePointer, OpaquePointer_pointerValue);
+    return (void *)(uintptr_t)(*env)->GetLongField(env, opaquePointer, OpaquePointer_pointerValue);
 }
 
 /** Global Ref

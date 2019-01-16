@@ -44,7 +44,7 @@ extern "C" {
     (JNIEnv *env, jobject self, jlong libHandle, jstring jFuncName) {
         void* result = NULL;
         const char* funcName = (*env)->GetStringUTFChars(env, jFuncName, NULL);
-        result = dlsym((void*) libHandle, funcName);
+        result = dlsym((void*)(uintptr_t)libHandle, funcName);
         if (result == NULL) {
             throwException(env, UnsatisfiedLink, "Find Function Address %s %s", funcName, dlerror());
         }
@@ -81,7 +81,7 @@ extern "C" {
  */
 JNIEXPORT jlong JNICALL Java_jnr_jffi_spi_PosixLibraryLoaderImpl_malloc
   (JNIEnv *env, jobject self, jlong size) {
-    return (jlong)malloc(size);
+    return (jlong)(uintptr_t)malloc(size);
 }
 
 #ifdef __cplusplus
